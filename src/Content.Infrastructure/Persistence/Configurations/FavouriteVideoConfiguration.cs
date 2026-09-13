@@ -11,6 +11,10 @@ public class FavouriteVideoConfiguration : IEntityTypeConfiguration<FavouriteVid
         ArgumentNullException.ThrowIfNull(builder);
 
         builder.HasKey(f => f.Id);
-        builder.HasIndex(f => new { f.UserId, f.VideoId }).IsUnique();
+        builder.HasIndex(f => new { f.UserId, f.VideoId })
+            .IsUnique()
+            .HasFilter("\"IsDeleted\" = FALSE");
+
+        builder.HasQueryFilter(f => !f.IsDeleted);
     }
 }
