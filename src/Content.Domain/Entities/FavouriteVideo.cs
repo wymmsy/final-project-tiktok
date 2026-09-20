@@ -11,6 +11,8 @@ public class FavouriteVideo
 
     public DateTime CreatedAt { get; private set; }
 
+    public bool IsDeleted { get; private set; }
+
     public FavouriteVideo(Guid userId, Guid videoId)
     {
         Id = Guid.NewGuid();
@@ -22,4 +24,6 @@ public class FavouriteVideo
     private FavouriteVideo()
     {
     }
+
+    public void Delete() => IsDeleted = true;
 }

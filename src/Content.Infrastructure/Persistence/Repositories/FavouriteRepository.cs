@@ -33,7 +33,7 @@ public class FavouriteRepository : IFavouriteRepository
 
     public void AddVideo(FavouriteVideo favourite) => _context.FavouriteVideos.Add(favourite);
 
-    public void RemoveVideo(FavouriteVideo favourite) => _context.FavouriteVideos.Remove(favourite);
+    public void RemoveVideo(FavouriteVideo favourite) => favourite.Delete();
 
     public void AddSound(FavouriteSound favourite) => _context.FavouriteSounds.Add(favourite);
 
