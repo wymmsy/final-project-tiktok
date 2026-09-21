@@ -18,35 +18,6 @@ public class FavouritesController : ControllerBase
         _favouriteService = favouriteService;
     }
 
-    [HttpGet("videos")]
-    [ProducesResponseType(typeof(IReadOnlyList<VideoResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ListVideos(Guid userId, CancellationToken cancellationToken)
-    {
-        IReadOnlyList<VideoResponse> videos = await _favouriteService.ListVideosAsync(userId, cancellationToken);
-
-        return Ok(videos);
-    }
-
-    [HttpPost("videos/{videoId:guid}")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> AddVideo(Guid userId, Guid videoId, CancellationToken cancellationToken)
-    {
-        await _favouriteService.AddVideoAsync(userId, videoId, cancellationToken);
-
-        return StatusCode(StatusCodes.Status201Created);
-    }
-
-    [HttpDelete("videos/{videoId:guid}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> RemoveVideo(Guid userId, Guid videoId, CancellationToken cancellationToken)
-    {
-        await _favouriteService.RemoveVideoAsync(userId, videoId, cancellationToken);
-
-        return NoContent();
-    }
-
     [HttpGet("sounds")]
     [ProducesResponseType(typeof(IReadOnlyList<SoundResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> ListSounds(Guid userId, CancellationToken cancellationToken)

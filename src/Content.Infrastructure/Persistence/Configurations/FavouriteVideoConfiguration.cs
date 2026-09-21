@@ -12,5 +12,8 @@ public class FavouriteVideoConfiguration : IEntityTypeConfiguration<FavouriteVid
 
         builder.HasKey(f => f.Id);
         builder.HasIndex(f => new { f.UserId, f.VideoId }).IsUnique();
+
+        builder.Property(f => f.IsDeleted).HasColumnName("is_deleted").HasDefaultValue(false);
+        builder.HasQueryFilter(f => !f.IsDeleted);
     }
 }
