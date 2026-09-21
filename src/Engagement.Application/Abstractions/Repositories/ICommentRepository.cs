@@ -12,6 +12,8 @@ public interface ICommentRepository
 
     Task<long> CountByVideoAsync(Guid videoId, CancellationToken cancellationToken = default);
 
+    Task<IReadOnlyList<Comment>> GetByUserAsync(Guid userId, CancellationToken cancellationToken = default);
+
     void Add(Comment comment);
 
     void Remove(Comment comment);

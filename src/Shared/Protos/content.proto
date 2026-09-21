@@ -6,13 +6,15 @@ option csharp_namespace = "TikTokFeed.Contracts.Grpc.Content";
 
 // Content Service = Video Service + Moderation Service
 service ContentService {
-  rpc GetVideo       (GetVideoRequest)       returns (VideoProto);
-  rpc GetVideosByUser(GetVideosByUserRequest) returns (VideosProto);
-  rpc CheckVideo     (CheckVideoRequest)     returns (ModerationResultProto);
+  rpc GetVideo          (GetVideoRequest)           returns (VideoProto);
+  rpc GetVideosByUser   (GetVideosByUserRequest)     returns (VideosProto);
+  rpc CheckVideo        (CheckVideoRequest)          returns (ModerationResultProto);
+  rpc GetUserExportData (GetUserExportDataRequest)   returns (ContentExportDataProto);
 }
 
-message GetVideoRequest        { string video_id = 1; }
-message GetVideosByUserRequest { string user_id  = 1; }
+message GetVideoRequest          { string video_id = 1; }
+message GetVideosByUserRequest   { string user_id  = 1; }
+message GetUserExportDataRequest { string user_id  = 1; }
 
 message VideoProto {
   string video_id          = 1;
@@ -40,4 +42,11 @@ message ModerationResultProto {
   string video_id = 1;
   string status   = 2;
   string reason   = 3;
+}
+
+// Собственный контент пользователя для self-service экспорта данных
+message ContentExportDataProto {
+  repeated VideoProto videos             = 1;
+  repeated string     favourite_video_ids = 2;
+  repeated string     favourite_sound_ids = 3;
 }

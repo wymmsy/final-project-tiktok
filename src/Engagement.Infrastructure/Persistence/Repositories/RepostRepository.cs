@@ -22,6 +22,12 @@ public class RepostRepository : IRepostRepository
     public Task<long> CountByVideoAsync(Guid videoId, CancellationToken cancellationToken = default) =>
         _context.Reposts.LongCountAsync(r => r.VideoId == videoId, cancellationToken);
 
+    public async Task<IReadOnlyList<Repost>> GetByUserAsync(Guid userId, CancellationToken cancellationToken = default) =>
+        await _context.Reposts
+            .Where(r => r.UserId == userId)
+            .OrderBy(r => r.RepostTimestamp)
+            .ToListAsync(cancellationToken);
+
     public void Add(Repost repost) => _context.Reposts.Add(repost);
 
     public void Remove(Repost repost) => _context.Reposts.Remove(repost);

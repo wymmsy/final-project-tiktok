@@ -22,6 +22,12 @@ public class LikeRepository : ILikeRepository
     public Task<long> CountByVideoAsync(Guid videoId, CancellationToken cancellationToken = default) =>
         _context.Likes.LongCountAsync(l => l.VideoId == videoId, cancellationToken);
 
+    public async Task<IReadOnlyList<Like>> GetByUserAsync(Guid userId, CancellationToken cancellationToken = default) =>
+        await _context.Likes
+            .Where(l => l.UserId == userId)
+            .OrderBy(l => l.LikeTimestamp)
+            .ToListAsync(cancellationToken);
+
     public void Add(Like entity) => _context.Likes.Add(entity);
 
     public void Remove(Like entity) => _context.Likes.Remove(entity);

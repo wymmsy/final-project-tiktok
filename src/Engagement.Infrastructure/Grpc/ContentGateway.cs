@@ -34,6 +34,17 @@ public class ContentGateway : IContentGateway
         return response.Videos.Select(Map).ToList();
     }
 
+    public async Task<ContentExportView> GetUserExportDataAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        ContentExportDataProto response = await _client.GetUserExportDataAsync(
+            new GetUserExportDataRequest { UserId = userId.ToString() }, cancellationToken: cancellationToken);
+
+        return new ContentExportView(
+            response.Videos.Select(Map).ToList(),
+            response.FavouriteVideoIds.Select(Guid.Parse).ToList(),
+            response.FavouriteSoundIds.Select(Guid.Parse).ToList());
+    }
+
     private static VideoView Map(VideoProto video) => new(
         Guid.Parse(video.VideoId),
         Guid.Parse(video.UserId),

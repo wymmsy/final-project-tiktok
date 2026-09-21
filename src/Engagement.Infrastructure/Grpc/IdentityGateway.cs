@@ -51,4 +51,29 @@ public class IdentityGateway : IIdentityGateway
             return null;
         }
     }
+
+    public async Task<UserExportView?> GetUserExportDataAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            UserExportDataProto data = await _client.GetUserExportDataAsync(
+                new GetUserExportDataRequest { UserId = userId.ToString() }, cancellationToken: cancellationToken);
+
+            return new UserExportView(
+                Guid.Parse(data.UserId),
+                data.Username,
+                data.Email,
+                string.IsNullOrEmpty(data.ProfileInfo) ? null : data.ProfileInfo,
+                string.IsNullOrEmpty(data.Avatar) ? null : data.Avatar,
+                string.IsNullOrEmpty(data.RegistrationDate) ? null : DateTime.Parse(data.RegistrationDate, null, System.Globalization.DateTimeStyles.RoundtripKind),
+                data.IsCreator,
+                data.IsModerator,
+                data.FollowingIds.Select(Guid.Parse).ToList(),
+                data.FollowerIds.Select(Guid.Parse).ToList());
+        }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
+        {
+            return null;
+        }
+    }
 }

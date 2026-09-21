@@ -17,6 +17,12 @@ public sealed class FakeContentGateway : IContentGateway
     public Task<IReadOnlyList<VideoView>> GetVideosByUserAsync(Guid userId, CancellationToken cancellationToken) =>
         Task.FromResult((IReadOnlyList<VideoView>)Videos.Values.Where(v => v.UserId == userId).ToList());
 
+    public Task<ContentExportView> GetUserExportDataAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var videos = (IReadOnlyList<VideoView>)Videos.Values.Where(v => v.UserId == userId).ToList();
+        return Task.FromResult(new ContentExportView(videos, new List<Guid>(), new List<Guid>()));
+    }
+
     public VideoView AddApproved(Guid owner, bool isPublic = true, string caption = "clip") =>
         Add(owner, "APPROVED", isPublic, caption);
 

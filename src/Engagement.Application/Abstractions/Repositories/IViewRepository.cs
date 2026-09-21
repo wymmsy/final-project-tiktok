@@ -8,5 +8,7 @@ public interface IViewRepository
 
     Task<long> CountByVideoAsync(Guid videoId, CancellationToken cancellationToken = default);
 
+    Task<IReadOnlyList<View>> GetByUserAsync(Guid userId, CancellationToken cancellationToken = default);
+
     void Add(View view);
 }

@@ -7,4 +7,6 @@ public interface IIdentityGateway
     Task<bool> ValidateTokenAsync(string token, CancellationToken cancellationToken);
 
     Task<UserView?> GetUserAsync(Guid userId, CancellationToken cancellationToken);
+
+    Task<UserExportView?> GetUserExportDataAsync(Guid userId, CancellationToken cancellationToken);
 }

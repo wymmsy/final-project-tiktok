@@ -19,5 +19,11 @@ public class ViewRepository : IViewRepository
     public Task<long> CountByVideoAsync(Guid videoId, CancellationToken cancellationToken = default) =>
         _context.Views.LongCountAsync(v => v.VideoId == videoId, cancellationToken);
 
+    public async Task<IReadOnlyList<View>> GetByUserAsync(Guid userId, CancellationToken cancellationToken = default) =>
+        await _context.Views
+            .Where(v => v.UserId == userId)
+            .OrderBy(v => v.ViewTimestamp)
+            .ToListAsync(cancellationToken);
+
     public void Add(View view) => _context.Views.Add(view);
 }

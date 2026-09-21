@@ -10,6 +10,8 @@ public interface IRepostRepository
 
     Task<long> CountByVideoAsync(Guid videoId, CancellationToken cancellationToken = default);
 
+    Task<IReadOnlyList<Repost>> GetByUserAsync(Guid userId, CancellationToken cancellationToken = default);
+
     void Add(Repost repost);
 
     void Remove(Repost repost);

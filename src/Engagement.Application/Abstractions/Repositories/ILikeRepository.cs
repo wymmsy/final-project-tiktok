@@ -10,6 +10,8 @@ public interface ILikeRepository
 
     Task<long> CountByVideoAsync(Guid videoId, CancellationToken cancellationToken = default);
 
+    Task<IReadOnlyList<Like>> GetByUserAsync(Guid userId, CancellationToken cancellationToken = default);
+
     void Add(Like entity);
 
     void Remove(Like entity);

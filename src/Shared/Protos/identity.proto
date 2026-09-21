@@ -6,14 +6,16 @@ option csharp_namespace = "TikTokFeed.Contracts.Grpc.Identity";
 
 // Identity Service = User Service
 service IdentityService {
-  rpc GetUser       (GetUserRequest)       returns (UserProto);
-  rpc ValidateToken (ValidateTokenRequest) returns (TokenValidationProto);
-  rpc GetFollowing  (GetFollowingRequest)  returns (FollowingProto);
+  rpc GetUser           (GetUserRequest)           returns (UserProto);
+  rpc ValidateToken     (ValidateTokenRequest)     returns (TokenValidationProto);
+  rpc GetFollowing      (GetFollowingRequest)      returns (FollowingProto);
+  rpc GetUserExportData (GetUserExportDataRequest) returns (UserExportDataProto);
 }
 
-message GetUserRequest       { string user_id = 1; }
-message ValidateTokenRequest { string token   = 1; }
-message GetFollowingRequest  { string user_id = 1; }
+message GetUserRequest           { string user_id = 1; }
+message ValidateTokenRequest     { string token   = 1; }
+message GetFollowingRequest      { string user_id = 1; }
+message GetUserExportDataRequest { string user_id = 1; }
 
 message FollowingProto { repeated string following_ids = 1; }
 
@@ -26,4 +28,18 @@ message UserProto {
 message TokenValidationProto {
   bool   is_valid = 1;
   string user_id  = 2;
+}
+
+// Полный профиль пользователя для self-service экспорта данных (GDPR-подобная выгрузка)
+message UserExportDataProto {
+  string user_id                = 1;
+  string username               = 2;
+  string email                  = 3;
+  string profile_info           = 4;
+  string avatar                 = 5;
+  string registration_date      = 6;
+  bool   is_creator             = 7;
+  bool   is_moderator           = 8;
+  repeated string following_ids = 9;
+  repeated string follower_ids  = 10;
 }

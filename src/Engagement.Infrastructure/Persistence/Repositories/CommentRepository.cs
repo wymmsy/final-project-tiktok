@@ -28,6 +28,12 @@ public class CommentRepository : ICommentRepository
     public Task<long> CountByVideoAsync(Guid videoId, CancellationToken cancellationToken = default) =>
         _context.Comments.LongCountAsync(c => c.VideoId == videoId, cancellationToken);
 
+    public async Task<IReadOnlyList<Comment>> GetByUserAsync(Guid userId, CancellationToken cancellationToken = default) =>
+        await _context.Comments
+            .Where(c => c.UserId == userId)
+            .OrderBy(c => c.CommentTimestamp)
+            .ToListAsync(cancellationToken);
+
     public void Add(Comment comment) => _context.Comments.Add(comment);
 
     public void Remove(Comment comment) => _context.Comments.Remove(comment);

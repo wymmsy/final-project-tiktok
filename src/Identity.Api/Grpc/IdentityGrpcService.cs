@@ -70,4 +70,37 @@ public class IdentityGrpcService : IdentityService.IdentityServiceBase
 
         return result;
     }
+
+    public override async Task<UserExportDataProto> GetUserExportData(GetUserExportDataRequest request, ServerCallContext context)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(context);
+
+        if (!Guid.TryParse(request.UserId, out Guid id))
+        {
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Bad user_id"));
+        }
+
+        User user = await _users.GetByIdAsync(id, context.CancellationToken)
+            ?? throw new RpcException(new Status(StatusCode.NotFound, "User not found"));
+
+        IReadOnlyList<Guid> following = await _follows.GetAllFollowingIdsAsync(id, context.CancellationToken);
+        IReadOnlyList<Guid> followers = await _follows.GetAllFollowerIdsAsync(id, context.CancellationToken);
+
+        var result = new UserExportDataProto
+        {
+            UserId = user.Id.ToString(),
+            Username = user.Username,
+            Email = user.Email,
+            ProfileInfo = user.ProfileInfo ?? string.Empty,
+            Avatar = user.Avatar ?? string.Empty,
+            RegistrationDate = user.RegistrationDate.ToString("O", System.Globalization.CultureInfo.InvariantCulture),
+            IsCreator = user.IsCreator,
+            IsModerator = user.IsModerator,
+        };
+        result.FollowingIds.AddRange(following.Select(followedId => followedId.ToString()));
+        result.FollowerIds.AddRange(followers.Select(followerId => followerId.ToString()));
+
+        return result;
+    }
 }

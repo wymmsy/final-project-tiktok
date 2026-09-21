@@ -15,6 +15,7 @@ public static class DependencyInjection
         services.AddScoped<IInteractionService, InteractionService>();
         services.AddScoped<IFeedService, FeedService>();
         services.AddScoped<IVideoStatsService, VideoStatsService>();
+        services.AddScoped<IExportService, ExportService>();
 
         return services;
     }

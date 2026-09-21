@@ -14,6 +14,8 @@ public interface IFollowRepository
 
     Task<IReadOnlyList<Guid>> GetAllFollowingIdsAsync(Guid userId, CancellationToken cancellationToken = default);
 
+    Task<IReadOnlyList<Guid>> GetAllFollowerIdsAsync(Guid userId, CancellationToken cancellationToken = default);
+
     Task<int> CountFollowersAsync(Guid userId, CancellationToken cancellationToken = default);
 
     Task<int> CountFollowingAsync(Guid userId, CancellationToken cancellationToken = default);
